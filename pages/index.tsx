@@ -81,9 +81,13 @@ const Blog: React.FC<Props> = (props) => {
 
         .pagination {
           margin-top: 2rem;
-          display: flex;
+          margin-bottom: 2rem;
           justify-content: space-between;
+          background: white;
+          border: 0;
+          padding: 1rem 2rem;
         }
+
       `}</style>
     </Layout>
   );
