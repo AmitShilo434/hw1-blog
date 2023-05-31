@@ -7,27 +7,34 @@ const Draft: React.FC = () => {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const { data: session, status } = useSession();
-  const [videoFile, setVideoFile] = useState<File | undefined>(undefined); // Add videoFile state
-  let email = session?.user?.email;
+  const [selectedFile, setSelectedFile] = useState("");
+  let email = session?.user?.email ?? "";
 
   const submitData = async (e: React.SyntheticEvent) => {
     e.preventDefault();
     try {
-      const body = { title, content, session, email, videoFile };
+      const body = { title, content, session, email };
+
+      const formData = new FormData();
+      formData.append('title', title);
+      formData.append('content', content);
+      formData.append('session', JSON.stringify(session));
+      formData.append('email', email);
+      formData.append('video', selectedFile);
+
       await fetch(`/api/post`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(body),
+        method: 'POST',
+        body: formData,
       });
+
       await Router.push("/drafts");
     } catch (error) {
       console.error(error);
     }
-  };
+};
 
-  const handleVideoUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    setVideoFile(file);
+  const handleFileChange = (event: any) => {
+    setSelectedFile(event.target.files[0]);
   };
 
   return (
@@ -49,7 +56,7 @@ const Draft: React.FC = () => {
             rows={8}
             value={content}
           />
-          <input type="file" accept="video/*" onChange={handleVideoUpload} />
+          <input type="file" accept="video/*" onChange={handleFileChange} />
           <input disabled={!content || !title} type="submit" value="Create" />
           <a className="back" href="#" onClick={() => Router.push("/")}>
             or Cancel
