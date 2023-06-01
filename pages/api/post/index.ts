@@ -84,19 +84,18 @@ export default async function handle(req: NextApiRequest, res: NextApiResponse) 
             });
             video.save().then((res: any) => {
               console.log('video saved!', res.id)
-              mongoose.connection.close()
+              // mongoose.connection.close()
+              try {
+                const updatedItem = prisma.post.update({
+                  where: { id: postId }, 
+                  data: { videoUrl: res.id },
+                }).then((postResult) => {
+                  console.log('Item updated: ', postResult);
+                })
+              } catch (error) {
+                console.error('Error updating item:', error);
+              }
             })
-
-            // const video = new Video({
-            //   postId: postId,
-            //   url: data.secure_url,
-            //   user: "sa",
-            // });
-            // video.save().then(result => {
-            //   console.log('video saved!')
-            //   mongoose.connection.close()
-            // })
-
 
           }).catch((err: any) => {
             console.log(err);
@@ -104,54 +103,13 @@ export default async function handle(req: NextApiRequest, res: NextApiResponse) 
         }
 
       })
-        // res.json(result);
-
-
-      // Handle the uploaded file here
-      // const video: PersistentFile | any = files.video;
-      // console.log("trying to uplosad: ", video.filepath)
-      // const result = cloudinary.uploader.upload(video.filepath, {
-      //   resource_type: 'video',
-      //   folder: 'videos', // Specify the folder where you want to save the video file in Cloudinary
-      // });
-
-      // result.then((data:  any) => {
-      //   // console.log(data);
-      //   console.log(data.secure_url);
-      // }).catch((err: any) => {
-      //   console.log(err);
-      // });
+      res.json(postResult);
     } else {
     res.status(401).send({ message: 'Unauthorized' })
   }
 
-    
-
-
-    // You can access the file information through `video` object
-    // For example, you can get the file path using `video.path`
-
     // Example response
-    res.status(200).json({ message: 'File uploaded successfully' });
+    // res.status(200).json({ message: 'File uploaded successfully' });
   });
-  
-  console.log("finished handle")
 
-
-
-  // const { title, content, session, email } = req.body;
-
-  
-  // if (session) {
-  //   const result = await prisma.post.create({
-  //     data: {
-  //       title: title,
-  //       content: content,
-  //       author: { connect: { email: email } },
-  //     },
-  //   });
-  //   res.json(result);
-  // } else {
-  //   res.status(401).send({ message: 'Unauthorized' })
-  // }
 }
