@@ -31,7 +31,7 @@ const videoSchema = new mongoose.Schema({
   user: String,
   date: Date,
 })
-const VideoMD = mongoose.model('Video', videoSchema)
+const VideoMD = mongoose.models.Video || mongoose.model('Video', videoSchema)
 
 // POST /api/post
 export default async function handle(req: NextApiRequest, res: NextApiResponse) {

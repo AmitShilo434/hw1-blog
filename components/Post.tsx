@@ -1,6 +1,8 @@
 import React from "react";
 import Router from "next/router";
 import ReactMarkdown from "react-markdown";
+import { useEffect, useState } from 'react';
+import VideoPlayer from './VideoPlayer';
 
 export type PostProps = {
   id: number;
@@ -16,24 +18,31 @@ export type PostProps = {
 
 const Post: React.FC<{ post: PostProps }> = ({ post }) => {
   const authorName = post.author ? post.author.name : "Unknown author";
-  const videoUrl = post.videoUrl ? post.videoUrl : "Unknown video";
+  const [videoUrl, setVideoUrl] = useState('');
 
-  // if(post.videoUrl) {
-  //   VideoMD.findById(post.videoUrl, (err: any, item: any) => {
-  //     if (err) {
-  //       console.error('Error finding item:', err);
-  //     } else {
-  //       console.log('Item found:', item);
-  //     }
-  //   });
-  // }
+  useEffect(() => {
+    const fetchVideoUrl = async () => {
+      if (post.videoUrl) {
+        try {
+          const response = await fetch(`/api/video/${post.videoUrl}`);
+          const data = await response.json();
+          console.log("setVideoUrl with", data)
+          setVideoUrl(data);
+        } catch (error) {
+          console.error('Error fetching video URL:', error);
+        }
+      }
+    };
+
+    fetchVideoUrl();
+  }, [post.videoUrl]);
 
   return (
     <div onClick={() => Router.push("/p/[id]", `/p/${post.id}`)}>
       <h2>{post.title}</h2>
       <small>By {authorName}</small>
       <ReactMarkdown children={post.content} />
-      <small>By {videoUrl}</small>
+      {videoUrl && <VideoPlayer videoUrl={videoUrl} />}
       <style jsx>{`
         div {
           color: inherit;
