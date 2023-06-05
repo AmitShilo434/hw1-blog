@@ -26,7 +26,7 @@ const VideoItem = () => {
     };
 
     fetchVideoUrl();
-  }, []);
+  }, [videoUrl]);
 
   return (
     <div>
