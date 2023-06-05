@@ -2,6 +2,8 @@ import type { NextApiRequest, NextApiResponse } from 'next'
 import prisma from '../../../lib/prisma'
 import formidable from 'formidable';
 import PersistentFile from 'formidable/PersistentFile';
+import db from '../../../mongoose/db';
+import VideoMD from '../../../mongoose/schemas/videoSchema';
 
 // Disables automatic body parsing
 export const config = {
@@ -14,24 +16,10 @@ export const config = {
 // Configuration to cloudinary
 const cloudinary = require('cloudinary').v2;
 cloudinary.config({
-  cloud_name: "dq0mokt4c",
-  api_key: "775482471871541",
-  api_secret: "wvfaZlTCnIab2Jx2XkRp-f-SxIQ"
+  cloud_name: process.env.CLOUDINARY_NAME,
+  api_key: process.env.CLOUDINARY_KEY,
+  api_secret: process.env.CLOUDINARY_SECRET
 });
-
-// Configuration and connect to mongoose
-const mongoose = require('mongoose')
-const url =
-  `mongodb+srv://admin:vH0ceyRtSuZVaNDy@videos.m4cdbi1.mongodb.net/?retryWrites=true&w=majority`
-mongoose.set('strictQuery',false)
-mongoose.connect(url)
-const videoSchema = new mongoose.Schema({
-  postId: String,
-  url: String,
-  user: String,
-  date: Date,
-})
-const VideoMD = mongoose.models.Video || mongoose.model('Video', videoSchema)
 
 // POST /api/post
 export default async function handle(req: NextApiRequest, res: NextApiResponse) {
@@ -82,6 +70,7 @@ export default async function handle(req: NextApiRequest, res: NextApiResponse) 
               user: postResult.authorId,
               date: new Date(),
             });
+            db.once
             video.save().then((res: any) => {
               console.log('video saved!', res.id)
               // mongoose.connection.close()
