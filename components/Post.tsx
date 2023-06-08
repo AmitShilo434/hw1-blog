@@ -26,7 +26,7 @@ const Post: React.FC<{ post: PostProps }> = ({ post }) => {
         try {
           const response = await fetch(`/api/video/${post.videoUrl}`);
           const data = await response.json();
-          console.log("setVideoUrl with", data)
+          // console.log("setVideoUrl with", data)
           setVideoUrl(data);
         } catch (error) {
           console.error('Error fetching video URL:', error);

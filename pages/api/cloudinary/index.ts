@@ -34,7 +34,7 @@ export default async function handle(req: NextApiRequest, res: NextApiResponse) 
             // Handle the uploaded file here
             if(files.video) {
                 const video: PersistentFile | any = files.video;
-                console.log("trying to upload: ", video.filepath)
+                // console.log("trying to upload: ", video.filepath)
                 const result = cloudinary.uploader.upload(video.filepath, {
                 resource_type: 'video',
                 folder: 'videos', // Specify the folder where you want to save the video file in Cloudinary

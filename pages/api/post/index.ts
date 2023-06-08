@@ -23,14 +23,11 @@ cloudinary.config({
 
 // POST /api/post
 export default async function handle(req: NextApiRequest, res: NextApiResponse) {
-  console.log("in handle")
   const form = new formidable.IncomingForm();
 
   form.parse(req, (err, fields, files) => {
     if (fields.session) {
-      console.log("in parse")
       if (err) {
-        console.log("in err")
         console.error('Error parsing form:', err);
         res.status(500).json({ error: 'Error parsing form' });
         return;
@@ -53,7 +50,6 @@ export default async function handle(req: NextApiRequest, res: NextApiResponse) 
         // Handle the uploaded file here
         if(files.video) {
           const video: PersistentFile | any = files.video;
-          console.log("trying to upload: ", video.filepath)
           const result = cloudinary.uploader.upload(video.filepath, {
             resource_type: 'video',
             folder: 'videos', // Specify the folder where you want to save the video file in Cloudinary
@@ -61,9 +57,8 @@ export default async function handle(req: NextApiRequest, res: NextApiResponse) 
 
           result.then((data:  any) => {
             // console.log(data);
-            console.log(data.secure_url);
+            // console.log(data.secure_url);
 
-            
             const video = new VideoMD({
               postId: postResult.id,
               url: data.secure_url,
@@ -96,7 +91,6 @@ export default async function handle(req: NextApiRequest, res: NextApiResponse) 
     } else {
     res.status(401).send({ message: 'Unauthorized' })
   }
-
     // Example response
     // res.status(200).json({ message: 'File uploaded successfully' });
   });

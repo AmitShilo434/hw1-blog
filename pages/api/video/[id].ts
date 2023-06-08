@@ -10,13 +10,12 @@ export default async function handle(req: NextApiRequest, res: NextApiResponse) 
   const itemId = req.query.id;
 
   if (req.method === "GET") {
-      console.log("trying to get id: ", itemId)
+      // console.log("trying to get id: ", itemId)
 
       var url = ""
       db.once
       VideoMD.find({_id: itemId}).then((result: any[]) => {
         result.forEach(item => {
-          console.log(item)
           // return note.url to the caller here
           url = item.url
         })
