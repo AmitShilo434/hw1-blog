@@ -2,7 +2,7 @@ import type { NextApiRequest, NextApiResponse } from 'next'
 import { getSession } from 'next-auth/react';
 import prisma from '../../../lib/prisma';
 import db from '../../../mongoose/db';
-import VideoMD from '../../../mongoose/schemas/videoSchema';
+import VideoMD from '../../../mongoose/schemas/VideoSchema';
 
 
 // GET /api/video/:id

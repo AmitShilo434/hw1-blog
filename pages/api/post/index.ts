@@ -3,7 +3,7 @@ import prisma from '../../../lib/prisma'
 import formidable from 'formidable';
 import PersistentFile from 'formidable/PersistentFile';
 import db from '../../../mongoose/db';
-import VideoMD from '../../../mongoose/schemas/videoSchema';
+import VideoMD from '../../../mongoose/schemas/VideoSchema';
 
 // Disables automatic body parsing
 export const config = {
