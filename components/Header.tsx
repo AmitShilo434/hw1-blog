@@ -1,7 +1,7 @@
 import React from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { signOut, useSession } from "next-auth/react";
+import { signOut, useSession } from "../lib/auth-controller";
 
 const Header: React.FC = () => {
   const router = useRouter();
@@ -148,7 +148,9 @@ const Header: React.FC = () => {
     right = (
       <div className="right">
         <p>
-          {session.user?.name} ({session.user?.email})
+          
+          {/* TODO {session.user?.name} ({session.user?.email}) */}
+          {"session.user?.name"} ({"session.user?.email"})
         </p>
         <Link href="/create" legacyBehavior>
           <button>

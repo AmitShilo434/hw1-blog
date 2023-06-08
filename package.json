@@ -18,7 +18,6 @@
     "mongodb": "^5.5.0",
     "mongoose": "^7.2.2",
     "next": "13.2.3",
-    "next-auth": "^4.22.1",
     "next-superjson": "0.0.4",
     "nodemailer": "^6.9.1",
     "react": "18.2.0",

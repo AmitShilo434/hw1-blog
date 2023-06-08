@@ -5,7 +5,7 @@ import Layout from "../../components/Layout";
 import Router from "next/router";
 import { PostProps } from "../../components/Post";
 import prisma from '../../lib/prisma'
-import { useSession } from "next-auth/react";
+import { useSession } from "../../lib/auth-controller";
 
 
 export const getServerSideProps: GetServerSideProps = async ({ params }) => {
@@ -44,7 +44,8 @@ const Post: React.FC<PostProps> = (props) => {
     return <div>Authenticating ...</div>;
   }
   const userHasValidSession = Boolean(session);
-  const postBelongsToUser = session?.user?.email === props.author?.email;
+  // const postBelongsToUser = session?.user?.email === props.author?.email; TODO
+  const postBelongsToUser = true
   let title = props.title;
   if (!props.published) {
     title = `${title} (Draft)`;

@@ -1,14 +1,15 @@
 import React, { useState } from "react";
 import Layout from "../components/Layout";
 import Router from "next/router";
-import { useSession } from "next-auth/react";
+import { useSession } from "../lib/auth-controller";
 
 const Draft: React.FC = () => {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const { data: session, status } = useSession();
   const [selectedFile, setSelectedFile] = useState("");
-  let email = session?.user?.email ?? "";
+  // let email = session?.user?.email ?? ""; TODO
+  let email = "session?.user?.email ?? ";
 
   const submitData = async (e: React.SyntheticEvent) => {
     e.preventDefault();
