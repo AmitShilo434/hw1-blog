@@ -1,14 +1,15 @@
 import React from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { signOut, useSession } from "next-auth/react";
 
 const Header: React.FC = () => {
   const router = useRouter();
   const isActive: (pathname: string) => boolean = (pathname) =>
     router.pathname === pathname;
 
-  const {data: session, status} = useSession();
+  // const {data: session, status} = useSession();
+  const session = true
+  
 
   let left = (
     <div className="left">
@@ -41,7 +42,8 @@ const Header: React.FC = () => {
 
   let right = null;
 
-  if (status === 'loading') {
+  //TODO
+  if (false) {
     left = (
       <div className="left">
         <Link href="/" legacyBehavior>
@@ -148,14 +150,15 @@ const Header: React.FC = () => {
     right = (
       <div className="right">
         <p>
-          {session.user?.name} ({session.user?.email})
+          {"session.user?.name"} ({"session.user?.email"})
         </p>
         <Link href="/create" legacyBehavior>
           <button>
             <a>New post</a>
           </button>
         </Link>
-        <button onClick={() => signOut()}>
+        {/* <button onClick={() => signOut()}> */}
+        <button onClick={()=>{}}>
           <a>Log out</a>
         </button>
         <style jsx>{`

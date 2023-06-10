@@ -5,7 +5,6 @@ import Layout from "../../components/Layout";
 import Router from "next/router";
 import { PostProps } from "../../components/Post";
 import prisma from '../../lib/prisma'
-import { useSession } from "next-auth/react";
 
 
 export const getServerSideProps: GetServerSideProps = async ({ params }) => {
@@ -39,12 +38,13 @@ async function deletePost(id: number): Promise<void> {
 }
 
 const Post: React.FC<PostProps> = (props) => {
-  const { data: session, status } = useSession();
+  // const { data: session, status } = useSession();
   if (status === 'loading') {
     return <div>Authenticating ...</div>;
   }
-  const userHasValidSession = Boolean(session);
-  const postBelongsToUser = session?.user?.email === props.author?.email;
+  const userHasValidSession = true //TODO - Boolean(session);
+  // const postBelongsToUser = session?.user?.email === props.author?.email;
+  const postBelongsToUser = true
   let title = props.title;
   if (!props.published) {
     title = `${title} (Draft)`;

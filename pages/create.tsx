@@ -1,24 +1,24 @@
 import React, { useState } from "react";
 import Layout from "../components/Layout";
 import Router from "next/router";
-import { useSession } from "next-auth/react";
 
 const Draft: React.FC = () => {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
-  const { data: session, status } = useSession();
+  // const { data: session, status } = useSession();
   const [selectedFile, setSelectedFile] = useState("");
-  let email = session?.user?.email ?? "";
+  // let email = session?.user?.email ?? "";
+  let email = "session?.user?.email"
 
   const submitData = async (e: React.SyntheticEvent) => {
     e.preventDefault();
     try {
-      const body = { title, content, session, email };
+      // const body = { title, content, session, email };
 
       const formData = new FormData();
       formData.append('title', title);
       formData.append('content', content);
-      formData.append('session', JSON.stringify(session));
+      formData.append('session', "JSON.stringify(session)");
       formData.append('email', email);
       formData.append('video', selectedFile);
 
