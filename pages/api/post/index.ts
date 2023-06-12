@@ -43,7 +43,7 @@ export default async function handle(req: NextApiRequest, res: NextApiResponse) 
         content: content,
         author: { connect: { email: email } },
         },
-      }).then((postResult) => {
+      }).then((postResult: { id: any; authorId: any; }) => {
         const postId = postResult.id;
         console.log(postId); // Assuming postId exists in the result
 
@@ -73,7 +73,7 @@ export default async function handle(req: NextApiRequest, res: NextApiResponse) 
                 const updatedItem = prisma.post.update({
                   where: { id: postId }, 
                   data: { videoUrl: res.id },
-                }).then((postResult) => {
+                }).then((postResult: any) => {
                   console.log('Item updated: ', postResult);
                 })
               } catch (error) {

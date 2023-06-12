@@ -10,15 +10,15 @@ const Draft: React.FC = () => {
   const submitData = async (e: React.SyntheticEvent) => {
     e.preventDefault();
     try {
-      // const body = { title, content, session, email };
-      const formData = new FormData();
+      const body = { username, password };
 
-      await fetch(`/api/post`, {
-        method: 'POST',
-        body: formData,
+      await fetch(`/api/my-auth`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body),
       });
 
-      await Router.push("/drafts");
+      await Router.push("/");
     } catch (error) {
       console.error(error);
     }
