@@ -8,7 +8,7 @@ const Header: React.FC = () => {
     router.pathname === pathname;
 
   // const {data: session, status} = useSession();
-  const session = true
+  const session = false
   
 
   let left = (
@@ -87,8 +87,11 @@ const Header: React.FC = () => {
   if (!session) {
     right = (
       <div className="right">
-        <Link href="/api/auth/signin" legacyBehavior>
-          <a data-active={isActive("/signup")}>Log in</a>
+        <Link href="/login" legacyBehavior>
+          <a data-active={isActive("/login")}>Log in</a>
+        </Link>
+        <Link href="/signup" legacyBehavior>
+          <a data-active={isActive("/signup")}>Sign up</a>
         </Link>
         <style jsx>{`
           a {

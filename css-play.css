@@ -1,0 +1,12 @@
+.page {
+          background: white;
+          padding: 3rem;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          width: 500px;
+          max-width: 500px;
+          align-self: center;
+          margin-left: 50%;
+          margin-right: 50%;
+        }
