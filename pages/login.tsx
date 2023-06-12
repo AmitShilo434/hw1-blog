@@ -1,11 +1,13 @@
 import React, { useState } from "react";
 import Layout from "../components/Layout";
 import Router from "next/router";
+import { useAuthContext } from "../components/AuthContext";
 
 const Login: React.FC = () => {
   // const { data: session, status } = useSession();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const { setUser } = useAuthContext();
 
   const submitData = async (e: React.SyntheticEvent) => {
     e.preventDefault();
@@ -22,6 +24,14 @@ const Login: React.FC = () => {
         const { token } = await response.json();
         
         localStorage.setItem("token", token); // Store the token in local storage or a secure cookie
+        
+        const user = {
+          name: "John Doe",
+          email: email,
+        };
+    
+        setUser(user);
+
         await Router.push("/");
       } else {
         const data = await response.json();

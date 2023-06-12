@@ -1,7 +1,7 @@
 import React from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { signOut, useSession } from "next-auth/react";
+import { useAuthContext } from "./AuthContext";
 
 const Header: React.FC = () => {
   const router = useRouter();
@@ -9,7 +9,13 @@ const Header: React.FC = () => {
     router.pathname === pathname;
 
   // const {data: session, status} = useSession();
-  const session = false
+  const { user, setUser } = useAuthContext();
+  const session = user
+
+  const signOut = () => {
+    setUser(null)
+    localStorage.removeItem("token");
+  }
   
 
   let left = (
@@ -154,17 +160,15 @@ const Header: React.FC = () => {
     right = (
       <div className="right">
         <p>
-          
-          {/* TODO {session.user?.name} ({session.user?.email}) */}
-          {"session.user?.name"} ({"session.user?.email"})
+          {user.name} ({user.email})
         </p>
         <Link href="/create" legacyBehavior>
           <button>
             <a>New post</a>
           </button>
         </Link>
-        {/* <button onClick={() => signOut()}> */}
-        <button onClick={()=>{}}>
+        <button onClick={() => signOut()}>
+        {/* <button onClick={()=>{}}> */}
           <a>Log out</a>
         </button>
         <style jsx>{`

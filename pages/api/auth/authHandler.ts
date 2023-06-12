@@ -3,7 +3,7 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import prisma from "../../../lib/prisma";
 
-const secret = process.env.SECRET || "your-secret-key"; 
+const secret = process.env.JWT_SECRET || "no token"; 
 
 const authHandler: NextApiHandler = async (req, res) => {
   if (req.method === "POST") {
