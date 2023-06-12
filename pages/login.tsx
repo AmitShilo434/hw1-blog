@@ -25,7 +25,7 @@ const Login: React.FC = () => {
         await Router.push("/");
       } else {
         const data = await response.json();
-        alert(data.message);
+        alert(data.message);  
       }
       
     } catch (error) {
