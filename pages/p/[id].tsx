@@ -42,8 +42,13 @@ const Post: React.FC<PostProps> = (props) => {
   if (status === 'loading') {
     return <div>Authenticating ...</div>;
   }
+<<<<<<< HEAD
   const userHasValidSession = true //TODO - Boolean(session);
   // const postBelongsToUser = session?.user?.email === props.author?.email;
+=======
+  const userHasValidSession = Boolean(session);
+  // const postBelongsToUser = session?.user?.email === props.author?.email; TODO
+>>>>>>> 12a42b497ffedd423d9eeca815eeffdd919e5067
   const postBelongsToUser = true
   let title = props.title;
   if (!props.published) {
