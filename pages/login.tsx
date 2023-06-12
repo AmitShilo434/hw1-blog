@@ -2,23 +2,32 @@ import React, { useState } from "react";
 import Layout from "../components/Layout";
 import Router from "next/router";
 
-const Draft: React.FC = () => {
+const Login: React.FC = () => {
   // const { data: session, status } = useSession();
-  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   const submitData = async (e: React.SyntheticEvent) => {
     e.preventDefault();
     try {
-      const body = { username, password };
+      const body = { email, password };
 
-      await fetch(`/api/my-auth`, {
+      const response = await fetch(`/api/auth/authHandler`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body),
       });
 
-      await Router.push("/");
+      if (response.ok) {
+        const { token } = await response.json();
+        
+        localStorage.setItem("token", token); // Store the token in local storage or a secure cookie
+        await Router.push("/");
+      } else {
+        const data = await response.json();
+        alert(data.message);
+      }
+      
     } catch (error) {
       console.error(error);
     }
@@ -29,13 +38,13 @@ const Draft: React.FC = () => {
       <div className="login-box">
         <form onSubmit={submitData}>
           <h1>Log in</h1>
-          <label>Username:</label>
+          <label>Email:</label>
           <input
             autoFocus
-            onChange={(e) => setUsername(e.target.value)}
+            onChange={(e) => setEmail(e.target.value)}
             placeholder=""
             type="text"
-            value={username}
+            value={email}
           />
         <label>Password:</label>
         <input
@@ -44,7 +53,7 @@ const Draft: React.FC = () => {
             type="password"
             value={password}
           />
-          <input disabled={!username || !password} type="submit" value="Login" />
+          <input disabled={!email || !password} type="submit" value="Login" />
           <a className="back" href="#" onClick={() => Router.push("/")}>
             or go back
           </a>
@@ -92,4 +101,4 @@ const Draft: React.FC = () => {
   );
 };
 
-export default Draft;
+export default Login;

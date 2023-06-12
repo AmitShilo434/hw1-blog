@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Layout from "../components/Layout";
 import Router from "next/router";
 
-const Draft: React.FC = () => {
+const Signup: React.FC = () => {
   // const { data: session, status } = useSession();
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
@@ -14,13 +14,18 @@ const Draft: React.FC = () => {
     try {
       const body = { username, email, password };
 
-      await fetch(`/api/my-auth`, {
+      const response = await fetch(`/api/auth/signup`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body),
       });
 
-      await Router.push("/");
+      const data = await response.json();
+      alert(data.message);
+
+      if(response.status === 200) {
+        await Router.push("/login");
+      }
     } catch (error) {
       console.error(error);
     }
@@ -108,4 +113,4 @@ const Draft: React.FC = () => {
   );
 };
 
-export default Draft;
+export default Signup;
