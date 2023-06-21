@@ -105,6 +105,7 @@ const Draft: React.FC = () => {
         .back {
           margin-left: 1rem;
         }
+
       `}</style>
     </Layout>
   );

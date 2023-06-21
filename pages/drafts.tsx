@@ -7,7 +7,7 @@ import { useAuthContext } from '../components/AuthContext';
 
 
 export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
-
+  //TODO add here support for drafts
   const drafts = await prisma.post.findMany({
     where: {
       author: { email: "alssamit@gmail.com" },
@@ -56,6 +56,7 @@ const Drafts: React.FC<Props> = (props) => {
         .post {
           background: white;
           transition: box-shadow 0.1s ease-in;
+          margin-bottom: 2rem;
         }
 
         .post:hover {
@@ -65,6 +66,7 @@ const Drafts: React.FC<Props> = (props) => {
         .post + .post {
           margin-top: 2rem;
         }
+ 
       `}</style>
     </Layout>
   );
