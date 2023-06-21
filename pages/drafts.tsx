@@ -1,36 +1,32 @@
-import React from "react";
-import { GetServerSideProps } from "next";
-import Layout from "../components/Layout";
-import Post, { PostProps } from "../components/Post";
-import prisma from '../lib/prisma'
+import React, { useEffect, useState } from 'react';
+import Layout from '../components/Layout';
+import Post, { PostProps } from '../components/Post';
 import { useAuthContext } from '../components/AuthContext';
-
-
-export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
-  //TODO add here support for drafts
-  const drafts = await prisma.post.findMany({
-    where: {
-      author: { email: "alssamit@gmail.com" },
-      published: false,
-    },
-    include: {
-      author: {
-        select: { name: true },
-      },
-    },
-  });
-  return {
-    props: { drafts },
-  };
-};
 
 type Props = {
   drafts: PostProps[];
 };
 
-const Drafts: React.FC<Props> = (props) => {
+const Drafts: React.FC<Props> = () => {
   const { user } = useAuthContext();
-  
+  const [drafts, setDrafts] = useState<PostProps[]>([]);
+
+  useEffect(() => {
+    const fetchDrafts = async () => {
+      if (!user) return;
+
+      try {
+        const response = await fetch(`/api/drafts/${user.email}`);
+        const data = await response.json();
+        setDrafts(data.drafts);
+      } catch (error) {
+        console.error('Failed to fetch drafts:', error);
+      }
+    };
+
+    fetchDrafts();
+  }, [user]);
+
   if (!user) {
     return (
       <Layout>
@@ -45,7 +41,7 @@ const Drafts: React.FC<Props> = (props) => {
       <div className="page">
         <h1>My Drafts</h1>
         <main>
-          {props.drafts.map((post) => (
+          {drafts.map((post) => (
             <div key={post.id} className="post">
               <Post post={post} />
             </div>
@@ -66,7 +62,6 @@ const Drafts: React.FC<Props> = (props) => {
         .post + .post {
           margin-top: 2rem;
         }
- 
       `}</style>
     </Layout>
   );

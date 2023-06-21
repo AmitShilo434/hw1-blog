@@ -88,6 +88,10 @@ const Signup: React.FC = () => {
             border-radius: 0.5rem;
             border: 0.25rem solid rgba(0, 0, 0, 0.1);
         }
+        
+        .login-box h1 {
+          margin-bottom: 40px;
+        }
 
         input[type="text"], input[type="password"], input[type="email"],
         textarea {

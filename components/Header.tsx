@@ -1,6 +1,6 @@
 import React from "react";
 import Link from "next/link";
-import { useRouter } from "next/router";
+import Router, { useRouter } from "next/router";
 import { useAuthContext } from "./AuthContext";
 
 const Header: React.FC = () => {
@@ -8,13 +8,14 @@ const Header: React.FC = () => {
   const isActive: (pathname: string) => boolean = (pathname) =>
     router.pathname === pathname;
 
-  // const {data: session, status} = useSession();
   const { user, setUser } = useAuthContext();
-  const session = user
 
   const signOut = () => {
     setUser(null)
     localStorage.removeItem("token");
+    localStorage.removeItem("user");
+
+    Router.push("/login");
   }
   
 
@@ -91,7 +92,7 @@ const Header: React.FC = () => {
     );
   }
 
-  if (!session) {
+  if (!user) {
     right = (
       <div className="right">
         <Link href="/login" legacyBehavior>
@@ -125,7 +126,7 @@ const Header: React.FC = () => {
     );
   }
 
-  if (session) {
+  if (user) {
     left = (
       <div className="left">
         <Link href="/" legacyBehavior>
@@ -135,6 +136,9 @@ const Header: React.FC = () => {
         </Link>
         <Link href="/drafts" legacyBehavior>
           <a data-active={isActive("/drafts")}>My drafts</a>
+        </Link>
+        <Link href="/profile" legacyBehavior>
+          <a data-active={isActive("/drafts")}>View profile</a>
         </Link>
         <style jsx>{`
           .bold {
