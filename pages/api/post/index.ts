@@ -26,7 +26,6 @@ export default async function handle(req: NextApiRequest, res: NextApiResponse) 
   const form = new formidable.IncomingForm();
 
   form.parse(req, (err, fields, files) => {
-    if (fields.session) {
       if (err) {
         console.error('Error parsing form:', err);
         res.status(500).json({ error: 'Error parsing form' });
@@ -43,7 +42,7 @@ export default async function handle(req: NextApiRequest, res: NextApiResponse) 
         content: content,
         author: { connect: { email: email } },
         },
-      }).then((postResult) => {
+      }).then((postResult: { id: any; authorId: any; }) => {
         const postId = postResult.id;
         console.log(postId); // Assuming postId exists in the result
 
@@ -59,7 +58,7 @@ export default async function handle(req: NextApiRequest, res: NextApiResponse) 
             // console.log(data);
             // console.log(data.secure_url);
 
-            const video = new VideoMD({
+            const video: any = new VideoMD({
               postId: postResult.id,
               url: data.secure_url,
               user: postResult.authorId,
@@ -73,7 +72,7 @@ export default async function handle(req: NextApiRequest, res: NextApiResponse) 
                 const updatedItem = prisma.post.update({
                   where: { id: postId }, 
                   data: { videoUrl: res.id },
-                }).then((postResult) => {
+                }).then((postResult: any) => {
                   console.log('Item updated: ', postResult);
                 })
               } catch (error) {
@@ -88,9 +87,7 @@ export default async function handle(req: NextApiRequest, res: NextApiResponse) 
 
       })
       res.json(postResult);
-    } else {
-    res.status(401).send({ message: 'Unauthorized' })
-  }
+
     // Example response
     // res.status(200).json({ message: 'File uploaded successfully' });
   });

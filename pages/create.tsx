@@ -1,14 +1,17 @@
 import React, { useState } from "react";
 import Layout from "../components/Layout";
 import Router from "next/router";
+import { useAuthContext } from "../components/AuthContext";
+
 
 const Draft: React.FC = () => {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
-  // const { data: session, status } = useSession();
   const [selectedFile, setSelectedFile] = useState("");
-  // let email = session?.user?.email ?? "";
-  let email = "session?.user?.email"
+  const { user } = useAuthContext();
+
+  let email = user?.email ?? ""
+
 
   const submitData = async (e: React.SyntheticEvent) => {
     e.preventDefault();
@@ -18,12 +21,14 @@ const Draft: React.FC = () => {
       const formData = new FormData();
       formData.append('title', title);
       formData.append('content', content);
-      formData.append('session', "JSON.stringify(session)");
       formData.append('email', email);
       formData.append('video', selectedFile);
 
       await fetch(`/api/post`, {
         method: 'POST',
+        headers: {
+          Authorization: `Bearer ${user?.token}`,
+        },
         body: formData,
       });
 
@@ -100,6 +105,7 @@ const Draft: React.FC = () => {
         .back {
           margin-left: 1rem;
         }
+
       `}</style>
     </Layout>
   );

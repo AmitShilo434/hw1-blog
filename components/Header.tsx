@@ -1,14 +1,22 @@
 import React from "react";
 import Link from "next/link";
-import { useRouter } from "next/router";
+import Router, { useRouter } from "next/router";
+import { useAuthContext } from "./AuthContext";
 
 const Header: React.FC = () => {
   const router = useRouter();
   const isActive: (pathname: string) => boolean = (pathname) =>
     router.pathname === pathname;
 
-  // const {data: session, status} = useSession();
-  const session = true
+  const { user, setUser } = useAuthContext();
+
+  const signOut = () => {
+    setUser(null)
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+
+    Router.push("/login");
+  }
   
 
   let left = (
@@ -84,11 +92,14 @@ const Header: React.FC = () => {
     );
   }
 
-  if (!session) {
+  if (!user) {
     right = (
       <div className="right">
-        <Link href="/api/auth/signin" legacyBehavior>
-          <a data-active={isActive("/signup")}>Log in</a>
+        <Link href="/login" legacyBehavior>
+          <a data-active={isActive("/login")}>Log in</a>
+        </Link>
+        <Link href="/signup" legacyBehavior>
+          <a data-active={isActive("/signup")}>Sign up</a>
         </Link>
         <style jsx>{`
           a {
@@ -115,7 +126,7 @@ const Header: React.FC = () => {
     );
   }
 
-  if (session) {
+  if (user) {
     left = (
       <div className="left">
         <Link href="/" legacyBehavior>
@@ -125,6 +136,9 @@ const Header: React.FC = () => {
         </Link>
         <Link href="/drafts" legacyBehavior>
           <a data-active={isActive("/drafts")}>My drafts</a>
+        </Link>
+        <Link href="/profile" legacyBehavior>
+          <a data-active={isActive("/drafts")}>View profile</a>
         </Link>
         <style jsx>{`
           .bold {
@@ -150,16 +164,15 @@ const Header: React.FC = () => {
     right = (
       <div className="right">
         <p>
-          {"session.user?.name"} ({"session.user?.email"})
+          {user.name} ({user.email})
         </p>
         <Link href="/create" legacyBehavior>
           <button>
             <a>New post</a>
           </button>
         </Link>
-        {/* <button onClick={() => signOut()}> */}
-        <button onClick={()=>{}}>
-          <a>Log out</a>
+        <button onClick={() => signOut()}>
+          <a><b>Log out</b></a>
         </button>
         <style jsx>{`
           a {
@@ -186,6 +199,11 @@ const Header: React.FC = () => {
             border: 1px solid black;
             padding: 0.5rem 1rem;
             border-radius: 3px;
+          }
+          
+          .right a b {
+            color: IndianRed;
+            font-style: normal;
           }
 
           button {
