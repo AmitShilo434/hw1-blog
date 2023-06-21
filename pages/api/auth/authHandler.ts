@@ -10,7 +10,7 @@ const authHandler: NextApiHandler = async (req, res) => {
     try {
       const { email, password } = req.body;
 
-      // Retrieve the user from the database
+      // Retrieve the user email from the database
       const user = await prisma.user.findUnique({ where: { email } });
 
       if (!user) {
@@ -18,16 +18,20 @@ const authHandler: NextApiHandler = async (req, res) => {
       }
 
       // Compare the provided password with the stored hash
-      const passwordsMatch = await bcrypt.compare(password, user.password);
+      const passwordsMatch = await bcrypt.compare(password, user.password as string);
 
       if (!passwordsMatch) {
         return res.status(401).json({ message: "Invalid credentials" });
       }
 
       // Create a JWT token with the user's ID as the payload
-      const token = jwt.sign({ userId: user.id }, secret, { expiresIn: "1d" });
-
+      const token = jwt.sign(
+        { userId: user.id, email: user.email, username: user.name },
+        secret,
+        { expiresIn: "1d" }
+      );
       res.status(200).json({ token });
+
     } catch (error) {
       console.error("Error authenticating user:", error);
       res.status(500).json({ message: "Failed to authenticate user" });

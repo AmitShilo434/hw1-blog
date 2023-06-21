@@ -2,9 +2,9 @@ import React, { useState } from "react";
 import Layout from "../components/Layout";
 import Router from "next/router";
 import { useAuthContext } from "../components/AuthContext";
+import jwt, { JwtPayload } from "jsonwebtoken";
 
 const Login: React.FC = () => {
-  // const { data: session, status } = useSession();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const { setUser } = useAuthContext();
@@ -24,13 +24,17 @@ const Login: React.FC = () => {
         const { token } = await response.json();
         
         localStorage.setItem("token", token); // Store the token in local storage or a secure cookie
-        
-        const user = {
-          name: "John Doe",
-          email: email,
-        };
-    
-        setUser(user);
+
+        const decodedToken = jwt.decode(token) as JwtPayload | null;
+
+        if (decodedToken) {
+          const user = {
+            name: decodedToken?.username,
+            email: decodedToken?.email,
+            token: token,
+          };
+          setUser(user);
+        }
 
         await Router.push("/");
       } else {

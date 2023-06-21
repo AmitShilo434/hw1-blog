@@ -168,8 +168,7 @@ const Header: React.FC = () => {
           </button>
         </Link>
         <button onClick={() => signOut()}>
-        {/* <button onClick={()=>{}}> */}
-          <a>Log out</a>
+          <a><b>Log out</b></a>
         </button>
         <style jsx>{`
           a {
@@ -196,6 +195,11 @@ const Header: React.FC = () => {
             border: 1px solid black;
             padding: 0.5rem 1rem;
             border-radius: 3px;
+          }
+          
+          .right a b {
+            color: IndianRed;
+            font-style: normal;
           }
 
           button {

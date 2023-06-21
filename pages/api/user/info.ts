@@ -1,10 +1,13 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { authMiddleware, AuthenticatedRequest } from "../../../lib/middleware";
 import prisma from "../../../lib/prisma";
+import { IntegerType } from "mongodb";
 
-const userHandler = async (req: AuthenticatedRequest, res: NextApiResponse) => {
+async function handle(req: NextApiRequest, res: NextApiResponse) {
   // Access the authenticated user ID using req.user.id
-  const userId = req.user?.id;
+  // const userId = req.user?.id;
+  const userId = 1;
+
 
   try {
     // Fetch user information from the database using the userId
@@ -29,4 +32,3 @@ const userHandler = async (req: AuthenticatedRequest, res: NextApiResponse) => {
   }
 };
 
-export default authMiddleware(userHandler);

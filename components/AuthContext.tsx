@@ -1,8 +1,9 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useState, useEffect } from "react";
 
-interface User {
+export interface User {
   name: string;
   email: string;
+  token: string;
 }
 
 interface AuthContextValue {
@@ -24,9 +25,23 @@ export const useAuthContext = () => useContext(AuthContext);
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children } : any) => {
   const [user, setUser] = useState<User | null>(null);
 
+  useEffect(() => {
+    // Retrieve user information from local storage on component mount
+    const storedUser = localStorage.getItem("user");
+    if (storedUser) {
+      setUser(JSON.parse(storedUser));
+    }
+  }, []);
+
+  const updateUser = (user: User | null) => {
+    // Update user information and store in local storage
+    setUser(user);
+    localStorage.setItem("user", JSON.stringify(user));
+  };
+
   const authContextValue: AuthContextValue = {
     user,
-    setUser,
+    setUser: updateUser,
   };
 
   return (

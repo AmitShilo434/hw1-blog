@@ -13,6 +13,8 @@ export const authMiddleware = (handler: NextApiHandler) => async (
   req: AuthenticatedRequest,
   res: NextApiResponse
 ) => {
+  
+  console.log("in Middleware")
   try {
     const token = req.headers.authorization?.split(" ")[1];
     if (!token) {
@@ -23,6 +25,7 @@ export const authMiddleware = (handler: NextApiHandler) => async (
     req.user = decodedToken;
 
     return await handler(req, res);
+
   } catch (error) {
     return res.status(401).json({ error: "Unauthorized" });
   }

@@ -3,19 +3,14 @@ import { GetServerSideProps } from "next";
 import Layout from "../components/Layout";
 import Post, { PostProps } from "../components/Post";
 import prisma from '../lib/prisma'
+import { useAuthContext } from '../components/AuthContext';
 
 
 export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
-  // const session = await getSession({ req }); TODO
-  const session =  true
-  if (!session) {
-    res.statusCode = 403;
-    return { props: { drafts: [] } };
-  }
 
   const drafts = await prisma.post.findMany({
     where: {
-      author: { email: "session.user?.email" },
+      author: { email: "alssamit@gmail.com" },
       published: false,
     },
     include: {
@@ -34,10 +29,9 @@ type Props = {
 };
 
 const Drafts: React.FC<Props> = (props) => {
-  // const {data: session}= useSession(); TODO 
-  const session =  true
-
-  if (!session) {
+  const { user } = useAuthContext();
+  
+  if (!user) {
     return (
       <Layout>
         <h1>My Drafts</h1>
