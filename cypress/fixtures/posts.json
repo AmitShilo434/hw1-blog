@@ -1,0 +1,13 @@
+[
+    {
+      "id": 1,
+      "title": "Sample Post 1",
+      "author": "John Doe"
+    },
+    {
+      "id": 2,
+      "title": "Sample Post 2",
+      "author": "Jane Smith"
+    }
+
+  ]
