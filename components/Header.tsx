@@ -2,6 +2,7 @@ import React from "react";
 import Link from "next/link";
 import Router, { useRouter } from "next/router";
 import { useAuthContext } from "./AuthContext";
+import { deleteCookie } from "../lib/cookie";
 
 const Header: React.FC = () => {
   const router = useRouter();
@@ -12,8 +13,11 @@ const Header: React.FC = () => {
 
   const signOut = () => {
     setUser(null)
-    localStorage.removeItem("token");
-    localStorage.removeItem("user");
+    // localStorage.removeItem("token");
+    // localStorage.removeItem("user");
+    deleteCookie("token");
+    deleteCookie("user");
+    
 
     Router.push("/login");
   }

@@ -6,6 +6,7 @@ import Router from "next/router";
 import { PostProps } from "../../components/Post";
 import prisma from '../../lib/prisma'
 import { useAuthContext, User } from '../../components/AuthContext';
+import { getCookie } from "../../lib/cookie";
 
 
 export const getServerSideProps: GetServerSideProps = async ({ params }) => {
@@ -25,7 +26,8 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
 };
 
 async function publishPost(id: number): Promise<void> {
-  const token = localStorage.getItem("token");
+  // const token = localStorage.getItem("token");
+  const token = getCookie("token");
   await fetch(`/api/publish/${id}`, {
     method: "PUT",
     headers: {

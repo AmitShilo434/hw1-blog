@@ -1,4 +1,5 @@
 import { createContext, useContext, useState, useEffect } from "react";
+import { getCookie, setCookie } from "../lib/cookie";
 
 export interface User {
   name: string;
@@ -27,7 +28,9 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children } : any) =>
 
   useEffect(() => {
     // Retrieve user information from local storage on component mount
-    const storedUser = localStorage.getItem("user");
+    // const storedUser = localStorage.getItem("user");
+
+    const storedUser = getCookie("user");
     if (storedUser) {
       setUser(JSON.parse(storedUser));
     }
@@ -36,7 +39,8 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children } : any) =>
   const updateUser = (user: User | null) => {
     // Update user information and store in local storage
     setUser(user);
-    localStorage.setItem("user", JSON.stringify(user));
+    // localStorage.setItem("user", JSON.stringify(user));
+    setCookie("user", user, 7)
   };
 
   const authContextValue: AuthContextValue = {

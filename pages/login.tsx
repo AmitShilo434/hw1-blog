@@ -3,6 +3,7 @@ import Layout from "../components/Layout";
 import Router from "next/router";
 import { useAuthContext } from "../components/AuthContext";
 import jwt, { JwtPayload } from "jsonwebtoken";
+import { setCookie } from "../lib/cookie.js"
 
 const Login: React.FC = () => {
   const [email, setEmail] = useState("");
@@ -23,7 +24,8 @@ const Login: React.FC = () => {
       if (response.ok) {
         const { token } = await response.json();
         
-        localStorage.setItem("token", token); // Store the token in local storage or a secure cookie
+        setCookie("token", token, 7)
+        // localStorage.setItem("token", token); // Store the token in local storage or a secure cookie
 
         const decodedToken = jwt.decode(token) as JwtPayload | null;
 

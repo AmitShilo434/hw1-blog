@@ -1,13 +1,15 @@
 import React, { useEffect, useState } from "react";
 import Layout from "../components/Layout";
 import Router from "next/router";
+import { getCookie } from "../lib/cookie";
 
 const Profile: React.FC = () => {
   const [user, setUser] = useState(null);
 
   useEffect(() => {
     // Retrieve the token from local storage
-    const token = localStorage.getItem("token");
+    // const token = localStorage.getItem("token");
+    const token = getCookie("token");
 
     // If the token exists, fetch user information
     if (token) {
@@ -50,7 +52,7 @@ const Profile: React.FC = () => {
   return (
     <Layout>
       <div>
-        <h1>Welcome, {user?.name}</h1>
+        <h1>Welcome, {"user?.name"}</h1>
       </div>
     </Layout>
   );
