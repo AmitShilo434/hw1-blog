@@ -27,9 +27,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children } : any) =>
   const [user, setUser] = useState<User | null>(null);
 
   useEffect(() => {
-    // Retrieve user information from local storage on component mount
-    // const storedUser = localStorage.getItem("user");
-
+    // Retrieve user information from Cookie
     const storedUser = getCookie("user");
     if (storedUser) {
       setUser(JSON.parse(storedUser));
@@ -37,9 +35,8 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children } : any) =>
   }, []);
 
   const updateUser = (user: User | null) => {
-    // Update user information and store in local storage
+    // Update user information and store in Cookie
     setUser(user);
-    // localStorage.setItem("user", JSON.stringify(user));
     setCookie("user", user, 7)
   };
 

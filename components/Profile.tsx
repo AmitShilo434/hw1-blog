@@ -7,8 +7,7 @@ const Profile: React.FC = () => {
   const [user, setUser] = useState(null);
 
   useEffect(() => {
-    // Retrieve the token from local storage
-    // const token = localStorage.getItem("token");
+    // Retrieve the token from Cookie
     const token = getCookie("token");
 
     // If the token exists, fetch user information

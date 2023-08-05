@@ -24,8 +24,8 @@ const Login: React.FC = () => {
       if (response.ok) {
         const { token } = await response.json();
         
+        // store rhe token of the session in cookie
         setCookie("token", token, 7)
-        // localStorage.setItem("token", token); // Store the token in local storage or a secure cookie
 
         const decodedToken = jwt.decode(token) as JwtPayload | null;
 

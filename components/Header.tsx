@@ -13,8 +13,6 @@ const Header: React.FC = () => {
 
   const signOut = () => {
     setUser(null)
-    // localStorage.removeItem("token");
-    // localStorage.removeItem("user");
     deleteCookie("token");
     deleteCookie("user");
     
