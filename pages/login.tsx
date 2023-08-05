@@ -4,11 +4,13 @@ import Router from "next/router";
 import { useAuthContext } from "../components/AuthContext";
 import jwt, { JwtPayload } from "jsonwebtoken";
 import { setCookie } from "../lib/cookie.js"
+import { generateCSRFToken } from "../lib/csrf.js"
 
 const Login: React.FC = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const { setUser } = useAuthContext();
+  // const [csrfToken, setCSRFToken] = useState('');
 
   const submitData = async (e: React.SyntheticEvent) => {
     e.preventDefault();
@@ -26,6 +28,9 @@ const Login: React.FC = () => {
         
         // store rhe token of the session in cookie
         setCookie("token", token, 7)
+
+        // const csrfToken = generateCSRFToken();
+        // setCSRFToken(csrfToken);
 
         const decodedToken = jwt.decode(token) as JwtPayload | null;
 
